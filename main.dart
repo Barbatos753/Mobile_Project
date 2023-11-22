@@ -19,8 +19,8 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  String difficultyValue = '';
-  String chooseOptionValue = '';
+  String difficultyValue = "Select Difficulty";
+  String chooseOptionValue = 'Choose Option';
 
   @override
   Widget build(BuildContext context) {
@@ -50,23 +50,25 @@ class _MyPageState extends State<MyPage> {
                 SizedBox(height: 20),
                 // Difficulty Dropdown
                 DropdownButton<String>(
-                  items: ['Easy', 'Medium', 'Hard']
-                      .map((difficulty) => DropdownMenuItem<String>(
-                    value: difficulty,
-                    child: Text(difficulty),
-                  ))
+                  items:['Select Difficulty', 'Easy', 'Medium', 'Hard']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  })
                       .toList(),
                   onChanged: (String? value) {
                     setState(() {
-                      difficultyValue = value ?? '';
+                      difficultyValue = value !;
                     });
                   },
-                  hint: Text('Select Difficulty'),
+                  value: difficultyValue,
                 ),
                 SizedBox(height: 10),
                 // Choose Option Dropdown
                 DropdownButton<String>(
-                  items: ['Choose Right', 'Think Tight']
+                  items: ['Choose Option', 'Choose Right', 'Think Tight']
                       .map((option) => DropdownMenuItem<String>(
                     value: option,
                     child: Text(option),
@@ -75,9 +77,10 @@ class _MyPageState extends State<MyPage> {
                   onChanged: (String? value) {
                     setState(() {
                       chooseOptionValue = value ?? '';
-                    });
+                    }
+                    );
                   },
-                  hint: Text('Choose Option'),
+                  value: chooseOptionValue,
                 ),
 
                 ElevatedButton(
