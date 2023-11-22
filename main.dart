@@ -41,14 +41,19 @@ class _MyPageState extends State<MyPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+
                 // Small Image
                 Image.asset(
                   'images/gm1.png', // Replace with your small image path
                   width: 200, // Adjust width as needed
                   height: 200, // Adjust height as needed
                 ),
+
                 SizedBox(height: 20),
                 // Difficulty Dropdown
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 DropdownButton<String>(
                   items:['Select Difficulty', 'Easy', 'Medium', 'Hard']
                       .map<DropdownMenuItem<String>>((String value) {
@@ -65,7 +70,7 @@ class _MyPageState extends State<MyPage> {
                   },
                   value: difficultyValue,
                 ),
-                SizedBox(height: 10),
+                SizedBox(width: 60),
                 // Choose Option Dropdown
                 DropdownButton<String>(
                   items: ['Choose Option', 'Choose Right', 'Think Tight']
@@ -82,7 +87,7 @@ class _MyPageState extends State<MyPage> {
                   },
                   value: chooseOptionValue,
                 ),
-
+]),
                 ElevatedButton(
                   onPressed: () {
                     // Handle button press
