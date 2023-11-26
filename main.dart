@@ -106,6 +106,7 @@ class MyPage extends StatefulWidget {
 class MyPageState extends State<MyPage> {
   String difficultyValue = "Select Difficulty";
   String chooseOptionValue = 'Choose Option';
+  String fruitOrVegetable='Vegetable';
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +177,7 @@ class MyPageState extends State<MyPage> {
                 ElevatedButton(
                   onPressed: () {
                     // Handle button press
-                    Navigator.push(context,MaterialPageRoute(builder: (context) =>  FoodGamemode()));
+                    Navigator.push(context,MaterialPageRoute(builder: (context) =>  FoodGamemode(difficultyValue: difficultyValue,fruitOrVegetable: fruitOrVegetable,)));
                   },
                   child: Text('Start'),
                 ),
