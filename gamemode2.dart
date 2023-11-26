@@ -1,36 +1,28 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:untitled/main.dart';
 
-void main() {
-  runApp(const MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+class gamemode2 extends StatefulWidget {
+  final int difficultyLevel;
 
+  gamemode2({required this.difficultyLevel});
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyPage(),
-    );
-  }
+  gamemode2state createState() => gamemode2state(difficultyLevel:difficultyLevel);
+
+
 }
 
-class MyPage extends StatefulWidget {
-  const MyPage({Key? key});
-
-  @override
-  _MyPageState createState() => _MyPageState();
-}
-
-class _MyPageState extends State<MyPage> {
+class gamemode2state extends State<gamemode2> {
+  int difficultyLevel;
+  int count=1;
+  gamemode2state({required this.difficultyLevel});
   final List<Item> fruits = [
     Item('Apple', 'Fruit', 'images/apple.jpg', 'Fact about Apple'),
     Item('Banana', 'Fruit', 'images/banana.png', 'Fact about Banana'),
     Item('coconut', 'Fruit', 'images/coconut.jpg', 'Fact about coconut'),
     Item('grape', 'Fruit', 'images/grape.jpg', 'Fact about grape'),
-    Item('orange', 'Fruit', 'images/orange.jpg', 'Fact about orange'),
+    Item('orange', 'Fruit', 'images/orange.png', 'Fact about orange'),
     Item('pineapple', 'Fruit', 'images/pineapple.jpg', 'Fact about pineapple'),
     Item('strawberry', 'Fruit', 'images/strawberry.jpg', 'Fact about strawberry'),
     Item('watermelon', 'Fruit', 'images/watermelon.jpg', 'Fact about watermelon'),
@@ -49,7 +41,6 @@ class _MyPageState extends State<MyPage> {
 
   List<Item> combinedItems = [];
   Item selectedItem = Item('', '', '', '');
-
   @override
   void initState() {
     super.initState();
@@ -70,16 +61,16 @@ class _MyPageState extends State<MyPage> {
 
   void _generateRandomFacts() {
     facts = [selectedItem.fact];
-    for (int i = 0; i < 3; i++) {
-      facts.add(_getRandomIncorrectFact());
-    }
-    facts.shuffle();
-  }
-
-  String _getRandomIncorrectFact() {
     List<Item> allItems = [...fruits, ...vegetables];
     allItems.remove(selectedItem);
-    return allItems[Random().nextInt(allItems.length)].fact;
+    for (Item f in allItems) {
+      String f=allItems[Random().nextInt(allItems.length)].fact;
+      if(!facts.contains(f))
+        facts.add(f);
+      if(facts.length==difficultyLevel+1)
+        break;
+    }
+    facts.shuffle();
   }
 
   List<String> facts = [];
@@ -108,12 +99,21 @@ class _MyPageState extends State<MyPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(
+                    'Think Tight: Level $count',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   // Display Item Image
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.blue, width: 2),
                       borderRadius: BorderRadius.circular(10),
                     ),
+
                     child: Image.asset(
                       selectedItem.imagePath,
                       width: 200,
@@ -128,8 +128,16 @@ class _MyPageState extends State<MyPage> {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            _checkAnswer(fact);
-                          },
+                            if (fact == selectedItem.fact) {
+                              count++;
+                              if (count <= 5) {
+                                showResultMessage(true);
+                              } else
+                                showmax(context);
+                            } else {
+                              showResultMessage(false);
+                              count = 1;
+                            }},
                           child: Text(fact),
                         ),
                       );
@@ -144,26 +152,62 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  void _checkAnswer(String selectedFact) {
-    setState(() {
-      if (selectedFact == selectedItem.fact) {
-        _showToast('Correct Answer!');
-      } else {
-        _showToast('Incorrect Answer! The correct answer is: ${selectedItem.fact}');
-      }
-      _chooseRandomItem();
-    });
-  }
+  void showResultMessage(bool isCorrect) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Result'),
+          content: Text(isCorrect ? 'Correct Answer!' : 'Wrong Answer!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  List<Item> combinedItems = [];
+                  Item selectedItem = Item('', '', '', '');
+                  _chooseRandomItem();
+                });
 
-  void _showToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.green,
-      textColor: Colors.white,
-      fontSize: 16.0,
+                Navigator.pop(context);
+              },
+              child: Text('Next'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void showmax(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('You Won!'),
+          content: Text('You Completed This Level, Congrats!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyPage()));
+              },
+              child: Text('Go to Home Page'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class AnotherPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Another Page'),
+      ),
+      body: Center(
+        child: Text('This is another page.'),
+      ),
     );
   }
 }

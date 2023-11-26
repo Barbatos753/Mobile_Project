@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:johnnyroudy/FoodGamemode.dart';
+import 'package:untitled/gamemode1.dart';
 import 'Food.dart';
+import 'gamemode2.dart';
 
 Food carrot = Food(
   image: 'images/carrot.jpg',
@@ -48,12 +49,12 @@ Food apple = Food(
 );
 
 Food banana = Food(
-  image: 'images/banana.jpg',
+  image: 'images/banana.png',
   fact: 'Bananas are potassium-rich for heart and muscle health.',
 );
 
 Food orange = Food(
-  image: 'images/orange.jpg',
+  image: 'images/orange.png',
   fact: 'Oranges are packed with vitamin C for immune support.',
 );
 
@@ -107,6 +108,18 @@ class MyPageState extends State<MyPage> {
   String difficultyValue = "Select Difficulty";
   String chooseOptionValue = 'Choose Option';
   String fruitOrVegetable='Vegetable';
+  String gamemodepic = "images/gm1.png";
+  int difficultyLevel=0;
+  void chooselevel(){
+
+    if (difficultyValue == 'Easy') {
+      difficultyLevel=2;
+    }else if (difficultyValue == 'Medium') {
+      difficultyLevel=3;
+    }else if (difficultyValue == 'Hard') {
+      difficultyLevel=4;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +143,7 @@ class MyPageState extends State<MyPage> {
 
                 // Small Image
                 Image.asset(
-                  'images/gm1.png', // Replace with your small image path
+                  gamemodepic, // Replace with your small image path
                   width: 200, // Adjust width as needed
                   height: 200, // Adjust height as needed
                 ),
@@ -152,6 +165,7 @@ class MyPageState extends State<MyPage> {
                         onChanged: (String? value) {
                           setState(() {
                             difficultyValue = value !;
+                            chooselevel();
                           });
                         },
                         value: difficultyValue,
@@ -168,6 +182,10 @@ class MyPageState extends State<MyPage> {
                         onChanged: (String? value) {
                           setState(() {
                             chooseOptionValue = value ?? '';
+                            if(chooseOptionValue=='Choose Right')
+                              gamemodepic='images/gm1.png';
+                            else if(chooseOptionValue=='Think Tight')
+                              gamemodepic='images/gm2.png';
                           }
                           );
                         },
@@ -176,10 +194,44 @@ class MyPageState extends State<MyPage> {
                     ]),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle button press
-                    Navigator.push(context,MaterialPageRoute(builder: (context) =>  FoodGamemode(difficultyValue: difficultyValue,fruitOrVegetable: fruitOrVegetable,)));
+                    if(difficultyValue!=0) {
+                      if (chooseOptionValue == 'Think Tight')
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) =>
+                                gamemode2(difficultyLevel: difficultyLevel,)));
+                      if (chooseOptionValue == 'Choose Right')
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) =>
+                                FoodGamemode(
+                                  difficultyValue: difficultyValue,)));
+                    }
+                    else{
+                      void showmax(BuildContext context) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('choose a dificulty'),
+                              content: Text('now'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Close'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+
+                    }
                   },
                   child: Text('Start'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15), // Adjust padding as needed
+                  ),
                 ),
               ],
             ),
@@ -189,4 +241,3 @@ class MyPageState extends State<MyPage> {
     );
   }
 }
-
