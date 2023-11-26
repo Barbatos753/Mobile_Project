@@ -4,16 +4,19 @@ import 'main.dart';
 import 'Food.dart';
 
 class FoodGamemode extends StatefulWidget {
+  final String difficultyValue;
+  FoodGamemode({required this.difficultyValue});
   @override
-  FoodGamemodeState createState() => FoodGamemodeState();
+  FoodGamemodeState createState() => FoodGamemodeState(difficultyValue:difficultyValue);
 }
 
 class FoodGamemodeState extends State<FoodGamemode> {
-  List<Food> options = [apple,watermelon,strawberry,banana];
+  List<Food> options = [];
   Food correctAnswer=Food(image: '',fact: '') ;
   int count = 1;
-
-
+  final String difficultyValue;
+  String fruitOrVegetable='';
+  FoodGamemodeState({required this.difficultyValue,});
   @override
   void initState() {
     super.initState();
@@ -21,8 +24,78 @@ class FoodGamemodeState extends State<FoodGamemode> {
   }
 
   void startNewLevel() {
+    options=[];
+    fruitOrVegetable=['Fruit','Vegetable'][Random().nextInt(2)];
+    Fruits.shuffle();
+    Vegetables.shuffle();
+    if(fruitOrVegetable=='Fruit') {
+      if (difficultyValue == 'Easy') {
+        options.add(Fruits[Random().nextInt(Fruits.length)]);
+        for (Food item in Vegetables) {
+          if (!options.contains(item)) {
+            options.add(item);
+          }
+          if (options.length == 4) {
+            break;
+          }
+        }
+      }else if (difficultyValue == 'Medium') {
+        options.add(Fruits[Random().nextInt(Fruits.length)]);
+        for (Food item in Vegetables) {
+          if (!options.contains(item)) {
+            options.add(item);
+          }
+          if (options.length == 6) {
+            break;
+          }
+        }
+      }else if (difficultyValue == 'Hard') {
+        options.add(Fruits[Random().nextInt(Fruits.length)]);
+        for (Food item in Vegetables) {
+          if (!options.contains(item)) {
+            options.add(item);
+          }
+          if (options.length == 8) {
+            break;
+          }
+        }
+      }
+    }
+    else {
+      if (difficultyValue == 'Easy') {
+        options.add(Vegetables[Random().nextInt(Vegetables.length)]);
+        for (Food item in Fruits) {
+          if (!options.contains(item)) {
+            options.add(item);
+          }
+          if (options.length == 4) {
+            break;
+          }
+        }
+      }if (difficultyValue == 'Medium') {
+        options.add(Vegetables[Random().nextInt(Vegetables.length)]);
+        for (Food item in Fruits) {
+          if (!options.contains(item)) {
+            options.add(item);
+          }
+          if (options.length == 6) {
+            break;
+          }
+        }
+      }if (difficultyValue == 'Hard') {
+        options.add(Vegetables[Random().nextInt(Vegetables.length)]);
+        for (Food item in Fruits) {
+          if (!options.contains(item)) {
+            options.add(item);
+          }
+          if (options.length == 8) {
+            break;
+          }
+        }
+      }
+    }
+    correctAnswer=options[0];
     options.shuffle();
-    correctAnswer = options[Random().nextInt(options.length)];
   }
 
   @override
@@ -36,7 +109,7 @@ class FoodGamemodeState extends State<FoodGamemode> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Choose Right: Level $count',
+              'Choose The $fruitOrVegetable: Level $count',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
@@ -93,7 +166,80 @@ class FoodGamemodeState extends State<FoodGamemode> {
             TextButton(
               onPressed: () {
                 startNewLevel();
-                setState(() {});
+                setState(() {
+                  options=[];
+                  fruitOrVegetable=['Fruit','Vegetable'][Random().nextInt(2)];
+                  Fruits.shuffle();
+                  Vegetables.shuffle();
+                  if(fruitOrVegetable=='Fruit') {
+                    if (difficultyValue == 'Easy') {
+                      options.add(Fruits[Random().nextInt(Fruits.length)]);
+                      for (Food item in Vegetables) {
+                        if (!options.contains(item)) {
+                          options.add(item);
+                        }
+                        if (options.length == 4) {
+                          break;
+                        }
+                      }
+                    }else if (difficultyValue == 'Medium') {
+                      options.add(Fruits[Random().nextInt(Fruits.length)]);
+                      for (Food item in Vegetables) {
+                        if (!options.contains(item)) {
+                          options.add(item);
+                        }
+                        if (options.length == 6) {
+                          break;
+                        }
+                      }
+                    }else if (difficultyValue == 'Hard') {
+                      options.add(Fruits[Random().nextInt(Fruits.length)]);
+                      for (Food item in Vegetables) {
+                        if (!options.contains(item)) {
+                          options.add(item);
+                        }
+                        if (options.length == 8) {
+                          break;
+                        }
+                      }
+                    }
+                  }
+                  else {
+                    if (difficultyValue == 'Easy') {
+                      options.add(Vegetables[Random().nextInt(Vegetables.length)]);
+                      for (Food item in Fruits) {
+                        if (!options.contains(item)) {
+                          options.add(item);
+                        }
+                        if (options.length == 4) {
+                          break;
+                        }
+                      }
+                    }if (difficultyValue == 'Medium') {
+                      options.add(Vegetables[Random().nextInt(Vegetables.length)]);
+                      for (Food item in Fruits) {
+                        if (!options.contains(item)) {
+                          options.add(item);
+                        }
+                        if (options.length == 6) {
+                          break;
+                        }
+                      }
+                    }if (difficultyValue == 'Hard') {
+                      options.add(Vegetables[Random().nextInt(Vegetables.length)]);
+                      for (Food item in Fruits) {
+                        if (!options.contains(item)) {
+                          options.add(item);
+                        }
+                        if (options.length == 8) {
+                          break;
+                        }
+                      }
+                    }
+                  }
+                  correctAnswer=options[0];
+                  options.shuffle();
+                });
 
                 Navigator.pop(context);
               },
