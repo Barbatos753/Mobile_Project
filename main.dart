@@ -107,7 +107,7 @@ class MyPage extends StatefulWidget {
 class MyPageState extends State<MyPage> {
   String difficultyValue = "Select Difficulty";
   String chooseOptionValue = 'Choose Option';
-  String fruitOrVegetable='Vegetable';
+  String fruitOrVegetable='';
   String gamemodepic = "images/gm1.png";
   int difficultyLevel=0;
   void chooselevel(){
@@ -141,15 +141,13 @@ class MyPageState extends State<MyPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
-                // Small Image
                 Image.asset(
-                  gamemodepic, // Replace with your small image path
-                  width: 200, // Adjust width as needed
-                  height: 200, // Adjust height as needed
+                  gamemodepic,
+                  width: 200,
+                  height: 200,
                 ),
 
                 SizedBox(height: 20),
-                // Difficulty Dropdown
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -171,7 +169,6 @@ class MyPageState extends State<MyPage> {
                         value: difficultyValue,
                       ),
                       SizedBox(width: 60),
-                      // Choose Option Dropdown
                       DropdownButton<String>(
                         items: ['Choose Option', 'Choose Right', 'Think Tight']
                             .map((option) => DropdownMenuItem<String>(
@@ -194,7 +191,7 @@ class MyPageState extends State<MyPage> {
                     ]),
                 ElevatedButton(
                   onPressed: () {
-                    if(difficultyValue!=0) {
+                    if(difficultyValue!='Select Difficulty') {
                       if (chooseOptionValue == 'Think Tight')
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) =>
@@ -205,26 +202,7 @@ class MyPageState extends State<MyPage> {
                                 FoodGamemode(
                                   difficultyValue: difficultyValue,)));
                     }
-                    else{
-                      void showmax(BuildContext context) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('choose a dificulty'),
-                              content: Text('now'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('Close'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
+                    else{differror(context);
 
                     }
                   },
@@ -238,6 +216,25 @@ class MyPageState extends State<MyPage> {
           ),
         ],
       ),
+    );
+  }
+  void differror(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('choose a dificulty'),
+          content: Text('now'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

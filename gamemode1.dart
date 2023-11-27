@@ -12,7 +12,8 @@ class FoodGamemode extends StatefulWidget {
 
 class FoodGamemodeState extends State<FoodGamemode> {
   List<Food> options = [];
-  Food correctAnswer = Food(image: '', fact: '');
+  Food correctAnswer = Food(image: '',fact: '');
+  String correctfact='';
   int count = 1;
   final String difficultyValue;
   String fruitOrVegetable = '';
@@ -98,6 +99,7 @@ class FoodGamemodeState extends State<FoodGamemode> {
       }
     }
     correctAnswer = options[0];
+    correctfact=correctAnswer.fact;
     options.shuffle();
   }
 
@@ -123,7 +125,6 @@ class FoodGamemodeState extends State<FoodGamemode> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
-              // Use a Row to display two columns with a SingleChildScrollView
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -135,7 +136,7 @@ class FoodGamemodeState extends State<FoodGamemode> {
                       }).toList(),
                     ),
                   ),
-                  SizedBox(width: 16), // Add some spacing between columns
+                  SizedBox(width: 16),
                   SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
@@ -170,11 +171,11 @@ class FoodGamemodeState extends State<FoodGamemode> {
       child: Container(
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.yellow, width: 2),
-          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.deepOrangeAccent, width: 2),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
           child: Image.asset(
             option.image,
             width: 80,
@@ -192,7 +193,7 @@ class FoodGamemodeState extends State<FoodGamemode> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Result'),
-          content: Text(isCorrect ? 'Correct Answer!' : 'Wrong Answer!'),
+          content: Text(isCorrect ? 'Correct Answer!\n$correctfact' : 'Wrong Answer!'),
           actions: [
             TextButton(
               onPressed: () {

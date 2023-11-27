@@ -18,25 +18,25 @@ class gamemode2state extends State<gamemode2> {
   int count=1;
   gamemode2state({required this.difficultyLevel});
   final List<Item> fruits = [
-    Item('Apple', 'Fruit', 'images/apple.jpg', 'Fact about Apple'),
-    Item('Banana', 'Fruit', 'images/banana.png', 'Fact about Banana'),
-    Item('coconut', 'Fruit', 'images/coconut.jpg', 'Fact about coconut'),
-    Item('grape', 'Fruit', 'images/grape.jpg', 'Fact about grape'),
-    Item('orange', 'Fruit', 'images/orange.png', 'Fact about orange'),
-    Item('pineapple', 'Fruit', 'images/pineapple.jpg', 'Fact about pineapple'),
-    Item('strawberry', 'Fruit', 'images/strawberry.jpg', 'Fact about strawberry'),
-    Item('watermelon', 'Fruit', 'images/watermelon.jpg', 'Fact about watermelon'),
+    Item('Apple', 'Fruit', 'images/apple.jpg', 'High in fiber, promote digestive health.'),
+    Item('Banana', 'Fruit', 'images/banana.png', 'Are potassium-rich for heart and muscle health.'),
+    Item('coconut', 'Fruit', 'images/coconut.jpg', 'Provide healthy fats and are versatile in cooking.'),
+    Item('grape', 'Fruit', 'images/grape.jpg', 'Contain antioxidants for overall health.'),
+    Item('orange', 'Fruit', 'images/orange.png', 'Are packed with vitamin C for immune support.'),
+    Item('pineapple', 'Fruit', 'images/pineapple.jpg', 'Are tropical fruits with digestive benefits.'),
+    Item('strawberry', 'Fruit', 'images/strawberry.jpg', 'Are rich in vitamin C and antioxidants.'),
+    Item('watermelon', 'Fruit', 'images/watermelon.jpg', 'Are hydrating fruits with a sweet taste.'),
   ];
 
   final List<Item> vegetables = [
-    Item('Carrot', 'Vegetable', 'images/carrot.jpg', 'Fact about Carrot'),
-    Item('bellpeper', 'Vegetable', 'images/bellpeper.jpg', 'Fact about bellpeper'),
-    Item('broccoli', 'Vegetable', 'images/broccoli.jpg', 'Fact about broccoli'),
-    Item('cucumber', 'Vegetable', 'images/cucumber.jpg', 'Fact about cucumber'),
-    Item('lettuce', 'Vegetable', 'images/lettuce.jpg', 'Fact about lettuce'),
-    Item('olives', 'Vegetable', 'images/olives.jpg', 'Fact about olives'),
-    Item('spinach', 'Vegetable', 'images/spinach.jpg', 'Fact about spinach'),
-    Item('tomato', 'Vegetable', 'images/tomato.jpg', 'Fact about tomato'),
+    Item('Carrot', 'Vegetable', 'images/carrot.jpg', 'support eye health with beta-carotene'),
+    Item('bellpeper', 'Vegetable', 'images/bellpeper.jpg', 'provide vitamin A and C for immune support.'),
+    Item('broccoli', 'Vegetable', 'images/broccoli.jpg', 'is high in vitamins K and C for bone health.'),
+    Item('cucumber', 'Vegetable', 'images/cucumber.jpg', 'are low-calorie and hydrating for skin health.'),
+    Item('lettuce', 'Vegetable', 'images/lettuce.jpg', 'is a low-calorie green that adds crunch to salads.'),
+    Item('olives', 'Vegetable', 'images/olives.jpg', 'offer healthy monounsaturated fats for heart health.'),
+    Item('spinach', 'Vegetable', 'images/spinach.jpg', 'is rich in iron and vitamins for energy.'),
+    Item('tomato', 'Vegetable', 'images/tomato.jpg', 'contain lycopene, an antioxidant for heart health.'),
   ];
 
   List<Item> combinedItems = [];
@@ -107,7 +107,6 @@ class gamemode2state extends State<gamemode2> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  // Display Item Image
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.blue, width: 2),
