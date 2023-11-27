@@ -1,7 +1,7 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:johnnyroudy/FoodGamemode.dart';
 import 'Food.dart';
+import 'gamemode2.dart';
+import 'FoodGamemode.dart';
 
 Food carrot = Food(
   image: 'images/carrot.jpg',
@@ -101,12 +101,25 @@ class MyPage extends StatefulWidget {
   const MyPage({super.key});
 
   @override
-  _MyPageState createState() => _MyPageState();
+  MyPageState createState() => MyPageState();
 }
 
-class _MyPageState extends State<MyPage> {
+class MyPageState extends State<MyPage> {
   String difficultyValue = "Select Difficulty";
   String chooseOptionValue = 'Choose Option';
+  String fruitOrVegetable='';
+  String gamemodepic = "images/gm1.png";
+  int difficultyLevel=0;
+  void chooselevel(){
+
+    if (difficultyValue == 'Easy') {
+      difficultyLevel=2;
+    }else if (difficultyValue == 'Medium') {
+      difficultyLevel=3;
+    }else if (difficultyValue == 'Hard') {
+      difficultyLevel=4;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,15 +141,13 @@ class _MyPageState extends State<MyPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
-                // Small Image
                 Image.asset(
-                  'images/gm1.png', // Replace with your small image path
-                  width: 200, // Adjust width as needed
-                  height: 200, // Adjust height as needed
+                  gamemodepic,
+                  width: 200,
+                  height: 200,
                 ),
 
                 SizedBox(height: 20),
-                // Difficulty Dropdown
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -152,12 +163,12 @@ class _MyPageState extends State<MyPage> {
                         onChanged: (String? value) {
                           setState(() {
                             difficultyValue = value !;
+                            chooselevel();
                           });
                         },
                         value: difficultyValue,
                       ),
                       SizedBox(width: 60),
-                      // Choose Option Dropdown
                       DropdownButton<String>(
                         items: ['Choose Option', 'Choose Right', 'Think Tight']
                             .map((option) => DropdownMenuItem<String>(
@@ -168,6 +179,10 @@ class _MyPageState extends State<MyPage> {
                         onChanged: (String? value) {
                           setState(() {
                             chooseOptionValue = value ?? '';
+                            if(chooseOptionValue=='Choose Right')
+                              gamemodepic='images/gm1.png';
+                            else if(chooseOptionValue=='Think Tight')
+                              gamemodepic='images/gm2.png';
                           }
                           );
                         },
@@ -176,10 +191,27 @@ class _MyPageState extends State<MyPage> {
                     ]),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle button press
-                    Navigator.push(context,MaterialPageRoute(builder: (context) =>  FoodGamemode()));
+                    if(difficultyValue!='Select Difficulty') {
+                      if (chooseOptionValue == 'Think Tight')
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) =>
+                                gamemode2(difficultyLevel: difficultyLevel,)));
+                      else if (chooseOptionValue == 'Choose Right')
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) =>
+                                FoodGamemode(
+                                  difficultyValue: difficultyValue,)));
+                      else
+                        gmerror(context);
+                    }
+                    else{differror(context);
+
+                    }
                   },
-                  child: Text('Press Me'),
+                  child: Text('Start'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15), // Adjust padding as needed
+                  ),
                 ),
               ],
             ),
@@ -188,5 +220,42 @@ class _MyPageState extends State<MyPage> {
       ),
     );
   }
+  void differror(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('choose a dificulty'),
+          content: Text('now'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void gmerror(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('choose a gamemode'),
+          content: Text('now'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
-
