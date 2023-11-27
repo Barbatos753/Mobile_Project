@@ -198,20 +198,6 @@ class gamemode2state extends State<gamemode2> {
   }
 }
 
-class AnotherPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Another Page'),
-      ),
-      body: Center(
-        child: Text('This is another page.'),
-      ),
-    );
-  }
-}
-
 class Item {
   final String name;
   final String category;
