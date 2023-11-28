@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:untitled/gamemode1.dart';
 import 'Food.dart';
 import 'gamemode2.dart';
+import 'FoodGamemode.dart';
 
 Food carrot = Food(
   image: 'images/carrot.jpg',
@@ -77,7 +77,7 @@ Food pineapple = Food(
   image: 'images/pineapple.jpg',
   fact: ' are tropical fruits with digestive benefits.',
 );
-
+int x=0;
 Food coconut = Food(
   image: 'images/coconut.jpg',
   fact: ' provide healthy fats and are versatile in cooking.',
@@ -128,8 +128,10 @@ class MyPageState extends State<MyPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      // Use the context from the build method
-      showNameDialog(context);
+      if(x==0) {
+        showNameDialog(context);
+        x++;
+      }
     });
   }
 
@@ -216,17 +218,17 @@ class MyPageState extends State<MyPage> {
               ),
               // User Info Display
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    'Hello, $userName !',
-                    style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  'Hello, $userName !',
+                  style: TextStyle(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
+              ),
               // Game Mode Image
               Image.asset(
                 gamemodepic,
