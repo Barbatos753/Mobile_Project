@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import 'mainadmin.dart';
+import 'user.dart';
 import 'dart:math';
-import 'main.dart';
+import 'home.dart';
 import 'Food.dart';
+import 'playerlist.dart';
 
 class FoodGamemode extends StatefulWidget {
   final String difficultyValue;
-  FoodGamemode({required this.difficultyValue});
+  User user;
+  FoodGamemode({required this.difficultyValue, required this.user});
   @override
-  FoodGamemodeState createState() => FoodGamemodeState(difficultyValue: difficultyValue);
+  FoodGamemodeState createState() => FoodGamemodeState(difficultyValue: difficultyValue, user:user);
 }
 
 class FoodGamemodeState extends State<FoodGamemode> {
   List<Food> options = [];
+  User user;
   Food correctAnswer = Food(image: '',fact: '');
   String correctfact='';
   int count = 1;
   final String difficultyValue;
   String fruitOrVegetable = '';
-  FoodGamemodeState({required this.difficultyValue});
+  FoodGamemodeState({required this.difficultyValue,required this.user});
 
   @override
   void initState() {
@@ -108,11 +113,26 @@ class FoodGamemodeState extends State<FoodGamemode> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Choose Right'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home),  // Use Icons.home for a home-shaped icon
+            onPressed: () {
+              setState(() {
+
+              });
+              updateUserData(user);
+              if (user.role == 'admin')
+                Navigator.push(context, MaterialPageRoute(builder: (context) => adminPage(user: user,)));
+              else
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyPage(user: user,)));
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/back2.webp'), // Replace with your background image
+            image: AssetImage('images/back2.webp'),
             fit: BoxFit.cover,
           ),
         ),
@@ -158,6 +178,12 @@ class FoodGamemodeState extends State<FoodGamemode> {
     return InkWell(
       onTap: () {
         if (option == correctAnswer) {
+          if (difficultyValue == 'Hard')
+            user.score+=3;
+          if (difficultyValue == 'Medium')
+            user.score+=2;
+          if (difficultyValue == 'Easy')
+            user.score++;
           count++;
           if (count <= 5) {
             showResultMessage(true);
@@ -213,22 +239,28 @@ class FoodGamemodeState extends State<FoodGamemode> {
 
   void showmax(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('You Won!'),
-          content: Text('You Completed This Level, Congrats!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MyPage()));
-              },
-              child: Text('Go to main'),
-            ),
-          ],
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('You Won!'),
+            content: Text('You Completed This Level, Congrats!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  setState(() {
+
+                  });
+                  updateUserData(user);
+                  if (user.role == 'admin')
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => adminPage(user: user,)));
+                  else
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyPage(user: user,)));
+                },
+                child: Text('Go to main'),
+              ),
+            ],
+          );
+          },
         );
-      },
-    );
-  }
+    }
 }

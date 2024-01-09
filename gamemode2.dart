@@ -1,14 +1,19 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:untitled/main.dart';
+import 'user.dart';
+import 'home.dart';
+import 'Food.dart';
+import 'mainadmin.dart';
+import 'playerlist.dart';
 
 
 class gamemode2 extends StatefulWidget {
   final int difficultyLevel;
+  User user;
 
-  gamemode2({required this.difficultyLevel});
+  gamemode2({required this.difficultyLevel, required this.user});
   @override
-  gamemode2state createState() => gamemode2state(difficultyLevel:difficultyLevel);
+  gamemode2state createState() => gamemode2state(difficultyLevel:difficultyLevel,user:user);
 
 
 }
@@ -16,31 +21,12 @@ class gamemode2 extends StatefulWidget {
 class gamemode2state extends State<gamemode2> {
   int difficultyLevel;
   int count=1;
-  gamemode2state({required this.difficultyLevel});
-  final List<Item> fruits = [
-    Item('Apple', 'Fruit', 'images/apple.jpg', 'High in fiber, promote digestive health.'),
-    Item('Banana', 'Fruit', 'images/banana.png', 'Are potassium-rich for heart and muscle health.'),
-    Item('coconut', 'Fruit', 'images/coconut.jpg', 'Provide healthy fats and are versatile in cooking.'),
-    Item('grape', 'Fruit', 'images/grape.jpg', 'Contain antioxidants for overall health.'),
-    Item('orange', 'Fruit', 'images/orange.png', 'Are packed with vitamin C for immune support.'),
-    Item('pineapple', 'Fruit', 'images/pineapple.jpg', 'Are tropical fruits with digestive benefits.'),
-    Item('strawberry', 'Fruit', 'images/strawberry.jpg', 'Are rich in vitamin C and antioxidants.'),
-    Item('watermelon', 'Fruit', 'images/watermelon.jpg', 'Are hydrating fruits with a sweet taste.'),
-  ];
+  User user;
+  gamemode2state({required this.difficultyLevel,required this.user});
 
-  final List<Item> vegetables = [
-    Item('Carrot', 'Vegetable', 'images/carrot.jpg', 'support eye health with beta-carotene'),
-    Item('bellpeper', 'Vegetable', 'images/bellpeper.jpg', 'provide vitamin A and C for immune support.'),
-    Item('broccoli', 'Vegetable', 'images/broccoli.jpg', 'is high in vitamins K and C for bone health.'),
-    Item('cucumber', 'Vegetable', 'images/cucumber.jpg', 'are low-calorie and hydrating for skin health.'),
-    Item('lettuce', 'Vegetable', 'images/lettuce.jpg', 'is a low-calorie green that adds crunch to salads.'),
-    Item('olives', 'Vegetable', 'images/olives.jpg', 'offer healthy monounsaturated fats for heart health.'),
-    Item('spinach', 'Vegetable', 'images/spinach.jpg', 'is rich in iron and vitamins for energy.'),
-    Item('tomato', 'Vegetable', 'images/tomato.jpg', 'contain lycopene, an antioxidant for heart health.'),
-  ];
 
-  List<Item> combinedItems = [];
-  Item selectedItem = Item('', '', '', '');
+  List<Food> combinedItems = [];
+  Food selectedItem=Food(image: '', fact: '') ;
   @override
   void initState() {
     super.initState();
@@ -49,7 +35,7 @@ class gamemode2state extends State<gamemode2> {
   }
 
   void _combineItems() {
-    combinedItems = [...fruits, ...vegetables];
+    combinedItems = [...Fruits, ...Vegetables];
   }
 
   void _chooseRandomItem() {
@@ -61,9 +47,9 @@ class gamemode2state extends State<gamemode2> {
 
   void _generateRandomFacts() {
     facts = [selectedItem.fact];
-    List<Item> allItems = [...fruits, ...vegetables];
+    List<Food> allItems = [...Fruits, ...Vegetables];
     allItems.remove(selectedItem);
-    for (Item f in allItems) {
+    for (Food i in allItems) {
       String f=allItems[Random().nextInt(allItems.length)].fact;
       if(!facts.contains(f))
         facts.add(f);
@@ -80,6 +66,21 @@ class gamemode2state extends State<gamemode2> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Think Tight'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home),  // Use Icons.home for a home-shaped icon
+            onPressed: () {
+              setState(() {
+
+              });
+              updateUserData(user);
+              if (user.role == 'admin')
+                Navigator.push(context, MaterialPageRoute(builder: (context) => adminPage(user: user,)));
+              else
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyPage(user: user,)));
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -114,7 +115,7 @@ class gamemode2state extends State<gamemode2> {
                     ),
 
                     child: Image.asset(
-                      selectedItem.imagePath,
+                      selectedItem.image,
                       width: 200,
                       height: 200,
                     ),
@@ -162,8 +163,7 @@ class gamemode2state extends State<gamemode2> {
             TextButton(
               onPressed: () {
                 setState(() {
-                  List<Item> combinedItems = [];
-                  Item selectedItem = Item('', '', '', '');
+
                   _chooseRandomItem();
                 });
 
@@ -186,8 +186,14 @@ class gamemode2state extends State<gamemode2> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MyPage()));
-              },
+                setState(() {
+
+                });
+                updateUserData(user);
+                if (user.role == 'admin')
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => adminPage(user: user,)));
+                else
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyPage(user: user,)));              },
               child: Text('Go to Home Page'),
             ),
           ],
@@ -195,13 +201,4 @@ class gamemode2state extends State<gamemode2> {
       },
     );
   }
-}
-
-class Item {
-  final String name;
-  final String category;
-  final String imagePath;
-  final String fact;
-
-  Item(this.name, this.category, this.imagePath, this.fact);
 }
